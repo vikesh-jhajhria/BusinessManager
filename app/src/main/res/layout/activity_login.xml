@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.businessmanager.LoginActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.286">
+
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="numberPassword"
+            android:maxLength="1"
+            android:textSize="@dimen/font_16"
+            android:textColor="@color/textColorPrimary" />
+
+        <EditText
+            android:id="@+id/editText2"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:textSize="@dimen/font_16"
+            android:gravity="center"
+            android:inputType="numberPassword"
+            android:maxLength="1"
+            android:textColor="@color/textColorPrimary"
+            app:layout_constraintStart_toEndOf="@id/editText1" />
+
+        <EditText
+            android:id="@+id/editText3"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:ems="1"
+            android:textSize="@dimen/font_16"
+            android:gravity="center"
+            android:inputType="numberPassword"
+            android:maxLength="1"
+            android:textColor="@color/textColorPrimary"
+            app:layout_constraintStart_toEndOf="@id/editText2" />
+
+        <EditText
+            android:id="@+id/editText4"
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:ems="1"
+            android:textSize="@dimen/font_16"
+            android:gravity="center"
+            android:inputType="numberPassword"
+            android:maxLength="1"
+            android:textColor="@color/textColorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/editText3" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+    <Button
+        android:id="@+id/btn_go"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/go"
+        android:textSize="@dimen/font_20"
+        android:textColor="@color/textColorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>

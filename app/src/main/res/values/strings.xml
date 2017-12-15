@@ -5,7 +5,12 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="go">GO</string>
+    <string name="total_bal">Total available balance:</string>
+    <string name="total_market">Total credit in market:</string>
+    <string name="today_work">Work value</string>
+    <string name="income">Income</string>
+    <string name="expense">Expense</string>
+    <string name="today">Today</string>
+    <string name="this_month">This Month</string>
 </resources>

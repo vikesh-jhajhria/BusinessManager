@@ -21,7 +21,7 @@
         app:cardCornerRadius="35dp">
 
         <ImageView
-            android:id="@+id/profile_img_post"
+            android:id="@+id/img_avatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"

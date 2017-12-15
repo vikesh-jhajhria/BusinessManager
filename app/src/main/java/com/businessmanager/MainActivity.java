@@ -2,26 +2,41 @@ package com.businessmanager;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
+import com.businessmanager.fragments.HomeFragment;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    public static final String HOME = "HOME";
+    public static final String CUSTOMER = "CUSTOMER";
+    public static final String PAYMENT = "PAYMENT";
+    public static final String EXPENSE = "EXPENSE";
+    public static final String SERVICE = "SERVICE";
+    public static final String WORK = "WORK";
+    public static final String REPORT = "REPORT";
+    public static final String REMINDER = "REMINDER";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -40,6 +55,15 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        setCurrentDate();
+    }
+
+    private void setCurrentDate(){
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd/MM/yyyy");
+        String dateText = dateFormat.format(calendar.getTime());
+        ((TextView)findViewById(R.id.txt_date)).setText(dateText);
     }
 
     @Override
@@ -52,27 +76,77 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+
+    private void addFragment(String name) {
+        /*Fragment fragment;
+        switch (name) {
+            case HOME:
+                fragment = HomeFragment.newInstance("");
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.frame_main, fragment, "home_fragment")
+                        .commit();
+                break;
+            case CUSTOMER:
+                fragment = HomeFragment.newInstance("");
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.frame_main, fragment, "customer_fragment")
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            case PAYMENT:
+                fragment = HomeFragment.newInstance("");
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.frame_main, fragment, "payment_fragment")
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            case EXPENSE:
+                fragment = HomeFragment.newInstance("");
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.frame_main, fragment, "expense_fragment")
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            case SERVICE:
+                fragment = HomeFragment.newInstance("");
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.frame_main, fragment, "service_fragment")
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            case WORK:
+                fragment = HomeFragment.newInstance("");
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.frame_main, fragment, "work_fragment")
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            case REPORT:
+                fragment = HomeFragment.newInstance("");
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.frame_main, fragment, "report_fragment")
+                        .addToBackStack(null)
+                        .commit();
+                break;
+            case REMINDER:
+                fragment = HomeFragment.newInstance("");
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.frame_main, fragment, "reminder_fragment")
+                        .addToBackStack(null)
+                        .commit();
+                break;
+
+        }*/
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -80,18 +154,31 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        switch (id) {
+            case R.id.nav_home:
+                addFragment(HOME);
+                break;
+            case R.id.nav_customers:
+                addFragment(CUSTOMER);
+                break;
+            case R.id.nav_payments:
+                addFragment(PAYMENT);
+                break;
+            case R.id.nav_expenses:
+                addFragment(EXPENSE);
+                break;
+            case R.id.nav_services:
+                addFragment(SERVICE);
+                break;
+            case R.id.nav_work:
+                addFragment(WORK);
+                break;
+            case R.id.nav_reports:
+                addFragment(REPORT);
+                break;
+            case R.id.nav_reminder:
+                addFragment(REMINDER);
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

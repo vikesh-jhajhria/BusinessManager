@@ -1,5 +1,6 @@
 package com.businessmanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -27,14 +28,12 @@ public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -54,17 +53,17 @@ public class MainActivity extends BaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        ((TextView)navigationView.getHeaderView(0).findViewById(R.id.txt_user_name)).setText(getIntent().getStringExtra("NAME"));
-        ((TextView)navigationView.getHeaderView(0).findViewById(R.id.txt_contact)).setText(getIntent().getStringExtra("MOBILE"));
+        ((TextView) navigationView.getHeaderView(0).findViewById(R.id.txt_user_name)).setText(getIntent().getStringExtra("NAME"));
+        ((TextView) navigationView.getHeaderView(0).findViewById(R.id.txt_contact)).setText(getIntent().getStringExtra("MOBILE"));
 
         setCurrentDate();
     }
 
-    private void setCurrentDate(){
+    private void setCurrentDate() {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd MMM, yyyy");
         String dateText = dateFormat.format(calendar.getTime());
-        ((TextView)findViewById(R.id.txt_date)).setText(dateText);
+        ((TextView) findViewById(R.id.txt_date)).setText(dateText);
     }
 
     @Override
@@ -79,7 +78,11 @@ public class MainActivity extends BaseActivity
 
 
     private void changeScreen(String name) {
-
+        switch (name) {
+            case SERVICE:
+                startActivity(new Intent(MainActivity.this,ServicesActivity.class));
+                break;
+        }
     }
 
 

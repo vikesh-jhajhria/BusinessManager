@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
-import com.businessmanager.utils.AppPreferences;
 import com.businessmanager.utils.Config;
 
 import java.util.Date;
@@ -26,7 +25,7 @@ public class SplashActivity extends BaseActivity {
             public void run() {
                 long loginTime = preferences.getLoginTime();
                 Log.v(TAG, "logintime=" + loginTime);
-                if (loginTime < new Date().getTime() - 10000) {
+                if (loginTime < new Date().getTime() - (1000 * 60 * 10)) {
                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     finishAffinity();
                 } else {

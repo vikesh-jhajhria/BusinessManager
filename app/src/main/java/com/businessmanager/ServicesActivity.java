@@ -39,6 +39,17 @@ public class ServicesActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        for(int i = 0 ; i < 20; i++) {
+            ServiceModel model = new ServiceModel();
+            model.setTitle("name" + i);
+            serviceList.add(model);
+        }
+        serviceAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();

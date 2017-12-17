@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.businessmanager.R;
 import com.businessmanager.model.ServiceModel;
@@ -31,7 +32,8 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        ServiceModel model = mList.get(position);
+        holder.name.setText(model.getTitle());
     }
 
     @Override
@@ -41,10 +43,11 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
 
     //View holder class
     class ViewHolder extends RecyclerView.ViewHolder {
+        TextView name;
 
         public ViewHolder(View itemView) {
             super(itemView);
-
+            name = itemView.findViewById(R.id.txt_name);
         }
     }
 }

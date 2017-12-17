@@ -13,4 +13,6 @@
     <string name="expense">Expense</string>
     <string name="today">Today</string>
     <string name="this_month">This Month</string>
+    <string name="name">Name</string>
+    <string name="service_name">Name :</string>
 </resources>

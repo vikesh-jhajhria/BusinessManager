@@ -79,8 +79,26 @@ public class MainActivity extends BaseActivity
 
     private void changeScreen(String name) {
         switch (name) {
+            case CUSTOMER:
+                startActivity(new Intent(MainActivity.this,CustomerActivity.class));
+                break;
+            case PAYMENT:
+                startActivity(new Intent(MainActivity.this,PaymentActivity.class));
+                break;
+            case EXPENSE:
+                startActivity(new Intent(MainActivity.this,ExpenseActivity.class));
+                break;
             case SERVICE:
                 startActivity(new Intent(MainActivity.this,ServicesActivity.class));
+                break;
+            case WORK:
+                startActivity(new Intent(MainActivity.this,WorkActivity.class));
+                break;
+            case REPORT:
+                startActivity(new Intent(MainActivity.this,ReportActivity.class));
+                break;
+            case REMINDER:
+                startActivity(new Intent(MainActivity.this,ReminderActivity.class));
                 break;
         }
     }

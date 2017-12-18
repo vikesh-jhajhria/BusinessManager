@@ -5,9 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.businessmanager.R;
+import com.businessmanager.model.CustomerModel;
 import com.businessmanager.model.ServiceModel;
 
 import java.util.ArrayList;
@@ -16,11 +16,11 @@ import java.util.ArrayList;
  * Created by vikesh.kumar on 16-Dec-17.
  */
 
-public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHolder> {
+public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHolder> {
     private Context mContext;
-    private ArrayList<ServiceModel> mList;
+    private ArrayList<CustomerModel> mList;
 
-    public ServiceAdapter(Context context, ArrayList list) {
+    public CustomerAdapter(Context context, ArrayList list) {
         this.mContext = context;
         this.mList = list;
     }
@@ -32,8 +32,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ServiceModel model = mList.get(position);
-        holder.name.setText(model.getName());
+
     }
 
     @Override
@@ -43,11 +42,10 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ViewHold
 
     //View holder class
     class ViewHolder extends RecyclerView.ViewHolder {
-        TextView name;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.txt_name);
+
         }
     }
 }

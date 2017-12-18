@@ -29,7 +29,8 @@
         <activity android:name=".ExpenseActivity" />
         <activity android:name=".WorkActivity" />
         <activity android:name=".ReportActivity" />
-        <activity android:name=".ReminderActivity"></activity>
+        <activity android:name=".ReminderActivity" />
+        <activity android:name=".AddServiceActivity"></activity>
     </application>
 
 </manifest>

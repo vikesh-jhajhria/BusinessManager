@@ -1,6 +1,8 @@
 package com.businessmanager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -32,6 +34,14 @@ public class ServicesActivity extends BaseActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setTitle("Service");
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(ServicesActivity.this, AddServiceActivity.class),100);
+            }
+        });
+
         emptyView = findViewById(R.id.empty_view);
 
         recyclerView = findViewById(R.id.recycler_view);
@@ -49,6 +59,15 @@ public class ServicesActivity extends BaseActivity {
         for (int i = 0; i < 20; i++) {
             ServiceModel model = new ServiceModel();
             model.setName("name" + i);
+            model.setUnit("unit" + i);
+            model.setRate("100" + i);
+            model.setValidityFrom("01/01/201" + i);
+            if (i % 2 == 0) {
+                model.setValidityTo("01/01/201" + i);
+                model.setActive(false);
+            } else {
+                model.setActive(true);
+            }
             serviceList.add(model);
         }
         if (serviceList.size() > 0) {

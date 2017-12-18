@@ -14,5 +14,11 @@
     <string name="today">Today</string>
     <string name="this_month">This Month</string>
     <string name="name">Name</string>
-    <string name="service_name">Name :</string>
+    <string name="service_name">Service name</string>
+    <string name="service_unit">Service unit</string>
+    <string name="service_rate">Service rate</string>
+    <string name="applied_from">Rate applied from</string>
+    <string name="applied_to">Rate applied to</string>
+    <string name="discontinue">Discontinue</string>
+    <string name="submit">Submit</string>
 </resources>

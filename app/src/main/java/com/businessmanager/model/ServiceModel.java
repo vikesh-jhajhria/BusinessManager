@@ -5,11 +5,11 @@ package com.businessmanager.model;
  */
 
 public class ServiceModel {
-    private String name;
-    private String unit;
-    private String rate;
-    private String validityFrom;
-    private String validityTo;
+    private String name = "";
+    private String unit = "";
+    private String rate = "";
+    private String validityFrom = "";
+    private String validityTo = "";
     private boolean active;
 
     public String getName() {

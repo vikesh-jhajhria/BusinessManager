@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/submit"
                 android:textColor="@color/textColorPrimary"
-                android:textSize="@dimen/font_20" />
+                android:textSize="@dimen/font_16" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>

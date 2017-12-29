@@ -1,198 +1,123 @@
 package com.businessmanager;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.Date;
+import com.businessmanager.utils.Utils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-import static android.view.KeyEvent.ACTION_UP;
+public class LoginActivity extends BaseActivity {
 
-public class LoginActivity extends BaseActivity implements View.OnKeyListener, View.OnFocusChangeListener {
-
-    private EditText et1, et2, et3, et4;
-    private String pin;
+    private EditText mEmailView;
+    private EditText mPasswordView;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        // Set up the login form.
+        mEmailView = findViewById(R.id.email);
+        mAuth = FirebaseAuth.getInstance();
 
-        et1 = findViewById(R.id.editText1);
-        et2 = findViewById(R.id.editText2);
-        et3 = findViewById(R.id.editText3);
-        et4 = findViewById(R.id.editText4);
-
-        et1.setOnKeyListener(this);
-        et2.setOnKeyListener(this);
-        et3.setOnKeyListener(this);
-        et4.setOnKeyListener(this);
-
-
-        et2.setOnFocusChangeListener(this);
-        et3.setOnFocusChangeListener(this);
-        et4.setOnFocusChangeListener(this);
-
-        et1.addTextChangedListener(new TextWatcher() {
+        mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence.length() == 1) {
-                    et1.clearFocus();
-                     et2.requestFocus();
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+                    attemptLogin();
+                    return true;
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        et2.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence.length() == 1) {
-                    et2.clearFocus();
-                     et3.requestFocus();
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        et3.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence.length() == 1) {
-                    et3.clearFocus();
-                     et4.requestFocus();
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        et4.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence.length() == 1) {
-                    hideKeyboard();
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
+                return false;
             }
         });
 
-        findViewById(R.id.btn_go).setOnClickListener(this);
+        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptLogin();
+            }
+        });
+
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
     }
 
-
     @Override
-    public void onClick(View view) {
-        super.onClick(view);
-        switch (view.getId()) {
-            case R.id.btn_go:
-                if (!et1.getText().toString().trim().isEmpty()
-                        && !et2.getText().toString().trim().isEmpty()
-                        && !et3.getText().toString().trim().isEmpty()
-                        && !et4.getText().toString().trim().isEmpty()) {
-                    pin = et1.getText().toString().trim()
-                            + et2.getText().toString().trim()
-                            + et3.getText().toString().trim()
-                            + et4.getText().toString().trim();
+    public void onStop() {
+        super.onStop();
+      //  mAuth.signOut();
+    }
 
-                    preferences.setLoginTime(new Date().getTime());
-
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class)
-                    .putExtra("NAME","Hitesh Jhajhria")
-                    .putExtra("MOBILE","+91-9636255382"));
-                    finish();
-                }
-
-                break;
-
+    private void attemptLogin() {
+        String email = mEmailView.getText().toString();
+        if (TextUtils.isEmpty(email)) {
+            mEmailView.setError(getString(R.string.error_field_required));
+            mEmailView.requestFocus();
+            return;
+        } else if (!Utils.isEmailValid(email)) {
+            mEmailView.setError(getString(R.string.error_invalid_email));
+            mEmailView.requestFocus();
+            return;
         }
-    }
-
-    @Override
-    public boolean onKey(View view, int i, KeyEvent keyEvent) {
-        if (keyEvent.getAction() == ACTION_UP && keyEvent.getKeyCode() == KeyEvent.KEYCODE_DEL) {
-            switch (view.getId()) {
-                case R.id.editText2:
-                    if (et2.getText().toString().trim().isEmpty()) {
-                        et1.requestFocus();
-                    }
-                    break;
-                case R.id.editText3:
-                    if (et3.getText().toString().trim().isEmpty()) {
-                        et2.requestFocus();
-                    }
-                    break;
-                case R.id.editText4:
-                    if (et4.getText().toString().trim().isEmpty()) {
-                        et3.requestFocus();
-                    }
-                    break;
-            }
+        String password = mPasswordView.getText().toString();
+        if (!TextUtils.isEmpty(password) && !(password.length() > 5)) {
+            mPasswordView.setError(getString(R.string.error_invalid_password));
+            mPasswordView.requestFocus();
+            return;
         }
-        return false;
+
+
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
+
+                        // ...
+                    }
+                });
+
     }
 
 
-    @Override
-    public void onFocusChange(View view, boolean b) {
-        switch (view.getId()) {
-            case R.id.editText2:
-                if (et1.getText().toString().trim().isEmpty()) {
-                    et1.requestFocus();
-                }
-                break;
-            case R.id.editText3:
-                if (et1.getText().toString().trim().isEmpty()) {
-                    et1.requestFocus();
-                } else if (et2.getText().toString().trim().isEmpty()) {
-                    et2.requestFocus();
-                }
-                break;
-            case R.id.editText4:
-                if (et1.getText().toString().trim().isEmpty()) {
-                    et1.requestFocus();
-                } else if (et2.getText().toString().trim().isEmpty()) {
-                    et2.requestFocus();
-                } else if (et3.getText().toString().trim().isEmpty()) {
-                    et3.requestFocus();
-                }
-                break;
+    private void updateUI(FirebaseUser user){
+        if(user != null) {
+            Log.v(TAG, user.getUid());
+            Toast.makeText(this, user.getUid(), Toast.LENGTH_SHORT).show();
         }
     }
 }
+

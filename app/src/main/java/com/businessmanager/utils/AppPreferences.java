@@ -14,6 +14,7 @@ public class AppPreferences {
     public static final String USER_ID = "USERID";
     public static final String LOGIN_TIME = "LOGIN_TIME";
     public static final String USER_NAME = "USERNAME";
+    public static final String LOGIN_STATUS = "LOGIN_STATUS";
     public static final String USER_PHONE = "USERPHONE";
     public static final String USER_IMAGE = "USERIMAGE";
     public static final String USER_IMAGE_URL = "USERIMAGEURL";
@@ -34,7 +35,7 @@ public class AppPreferences {
     }
 
     public long getLoginTime() {
-        return mPrefs.getLong(LOGIN_TIME,0);
+        return mPrefs.getLong(LOGIN_TIME, 0);
     }
 
     public void setLoginTime(long value) {
@@ -42,6 +43,17 @@ public class AppPreferences {
         editor.putLong(LOGIN_TIME, value);
         editor.commit();
     }
+
+    public boolean getLoginStatus() {
+        return mPrefs.getBoolean(LOGIN_STATUS, false);
+    }
+
+    public void setLoginStatus(boolean value) {
+        SharedPreferences.Editor editor = mPrefs.edit();
+        editor.putBoolean(LOGIN_STATUS, value);
+        editor.commit();
+    }
+
     public String getFirebaseId() {
         return mPrefs.getString(FIREBASE_ID, "");
     }

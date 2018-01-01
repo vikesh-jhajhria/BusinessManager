@@ -16,6 +16,7 @@ public class AppPreferences {
     public static final String USER_NAME = "USERNAME";
     public static final String LOGIN_STATUS = "LOGIN_STATUS";
     public static final String USER_PHONE = "USERPHONE";
+    public static final String USER_EMAIL = "USER_EMAIL";
     public static final String USER_IMAGE = "USERIMAGE";
     public static final String USER_IMAGE_URL = "USERIMAGEURL";
     public static final String LATITUDE = "LATITUDE";
@@ -82,6 +83,17 @@ public class AppPreferences {
 
         SharedPreferences.Editor editor = mPrefs.edit();
         editor.putString(USER_NAME, name);
+        editor.commit();
+    }
+
+    public String getUserPhone() {
+        return mPrefs.getString(USER_PHONE, "");
+    }
+
+    public void setUserPhone(String phone) {
+
+        SharedPreferences.Editor editor = mPrefs.edit();
+        editor.putString(USER_PHONE, phone);
         editor.commit();
     }
 
@@ -161,5 +173,12 @@ public class AppPreferences {
         SharedPreferences.Editor editor = mPrefs.edit();
         editor.remove(key);
         editor.commit();
+    }
+
+    public void setUserEmail(String userEmail) {
+        putStringValue(USER_EMAIL, userEmail);
+    }
+    public String getUserEmail(){
+        return getStringValue(USER_EMAIL);
     }
 }

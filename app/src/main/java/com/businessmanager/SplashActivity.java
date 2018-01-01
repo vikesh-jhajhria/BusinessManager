@@ -24,15 +24,15 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void run() {
                 if(preferences.getLoginStatus()) {
-                    long loginTime = preferences.getLoginTime();
+                    /*long loginTime = preferences.getLoginTime();
                     Log.v(TAG, "logintime=" + loginTime);
                     if (loginTime < new Date().getTime() - (1000 * 60 * 10)) {
                         startActivity(new Intent(getApplicationContext(), PinActivity.class));
                         finishAffinity();
-                    } else {
+                    } else {*/
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         finishAffinity();
-                    }
+                    //}
                 } else{
                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     finishAffinity();

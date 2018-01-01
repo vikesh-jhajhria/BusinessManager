@@ -53,8 +53,8 @@ public class MainActivity extends BaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        ((TextView) navigationView.getHeaderView(0).findViewById(R.id.txt_user_name)).setText(getIntent().getStringExtra("NAME"));
-        ((TextView) navigationView.getHeaderView(0).findViewById(R.id.txt_contact)).setText(getIntent().getStringExtra("MOBILE"));
+        ((TextView) navigationView.getHeaderView(0).findViewById(R.id.txt_user_name)).setText(preferences.getUserName());
+        ((TextView) navigationView.getHeaderView(0).findViewById(R.id.txt_contact)).setText(preferences.getUserPhone());
 
         setCurrentDate();
     }

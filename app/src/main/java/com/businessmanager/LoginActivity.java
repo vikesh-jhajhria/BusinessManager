@@ -1,14 +1,17 @@
 package com.businessmanager;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,6 +23,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class LoginActivity extends BaseActivity {
 
@@ -56,19 +60,7 @@ public class LoginActivity extends BaseActivity {
         });
 
     }
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-      //  mAuth.signOut();
-    }
 
     private void attemptLogin() {
         String email = mEmailView.getText().toString();
@@ -97,13 +89,13 @@ public class LoginActivity extends BaseActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            setLoginStatus(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
+                            setLoginStatus(null);
                         }
 
                         // ...
@@ -113,11 +105,56 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-    private void updateUI(FirebaseUser user){
-        if(user != null) {
+    private void setLoginStatus(FirebaseUser user) {
+        hideKeyboard();
+        if (user != null) {
+            preferences.setLoginStatus(true);
+            preferences.setUserName(user.getDisplayName());
+            preferences.setUserPhone(user.getPhoneNumber());
+            preferences.setUserEmail(user.getEmail());
             Log.v(TAG, user.getUid());
-            Toast.makeText(this, user.getUid(), Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            finish();
+        } else {
+            Toast.makeText(this, "Invalid username or password!", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void collectInfoDialog() {
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayout = inflater.inflate(R.layout.layout_info_dialog, null);
+        final EditText etUsername = alertLayout.findViewById(R.id.edt_name);
+        final EditText etPhone = alertLayout.findViewById(R.id.edt_phone);
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Please enter your name and phone number");
+        // this is set the view from XML inside AlertDialog
+        alert.setView(alertLayout);
+        // disallow cancel of AlertDialog on click of back button and outside touch
+        alert.setCancelable(false);
+        alert.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String user = etUsername.getText().toString();
+                String phone = etPhone.getText().toString();
+                if (user.isEmpty()) {
+                    Toast.makeText(LoginActivity.this, "Please enter your name, its mandatory.", Toast.LENGTH_SHORT).show();
+                } else if (phone.isEmpty()) {
+                    Toast.makeText(LoginActivity.this, "Please enter your phone number, its mandatory.", Toast.LENGTH_SHORT).show();
+                } else if (phone.length() < 10) {
+                    Toast.makeText(LoginActivity.this, "Please enter valid phone number.", Toast.LENGTH_SHORT).show();
+                } else {
+                    FirebaseUser f_user = mAuth.getCurrentUser();
+                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(user)
+                            .build();
+                }
+
+                Toast.makeText(getBaseContext(), "Username: " + user + " Email: " + phone, Toast.LENGTH_SHORT).show();
+            }
+        });
+        AlertDialog dialog = alert.create();
+        dialog.show();
     }
 }
 
